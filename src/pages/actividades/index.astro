@@ -1,0 +1,19 @@
+---
+import { getCollection } from "astro:content"
+import ActividadSeccion from "../../components/ActividadSeccion.astro"
+import BaseLayout from "../../layouts/BaseLayout.astro"
+
+const actividades = await getCollection('actividades')
+---
+
+<BaseLayout>
+  <div class="content">
+    <h2>Nuestras actividades</h2>
+    <p>Tenemos una variedad de actividades, descubrelas!</p>
+    {actividades.map(actividad => <ActividadSeccion actividad={actividad} />)}
+    {actividades.length < 1 && (
+      <p>No tenemos actividades :( </p>
+    )}
+  </div>
+</BaseLayout>
+
