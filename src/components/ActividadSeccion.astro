@@ -10,7 +10,7 @@ const {actividad} = Astro.props
 <div class="actividad-seccion">
   <p class="actividad-nombre">{actividad.data.name}</p>
   <p class="actividad-organizador">{actividad.data.organizer}</p>
-  <a href={`${import.meta.env.BASE_URL}actividades/${actividad.id}`}>Enterate!</a>
+  <a href={`${import.meta.env.BASE_URL}/actividades/${actividad.id}`}>Enterate!</a>
 </div>
 
 <style>
