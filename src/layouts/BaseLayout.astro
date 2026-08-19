@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css"
+import Navbar from "../components/Navbar.astro"
 ---
 <html lang="es">
   <head>
@@ -16,15 +17,7 @@ import "../styles/global.css"
   </head>
   <body>
     <header>
-      <h1>Scefi</h1>
-      <nav>
-        <ul>
-          <li><a href={`${import.meta.env.BASE_URL}/`}>Inicio</a></li>
-          <li><a href={`${import.meta.env.BASE_URL}/sobre-nosotros`}>Sobre nosotros</a></li>
-          <li><a href={`${import.meta.env.BASE_URL}/actividades`}>Actividades</a></li>
-          <li><a href={`${import.meta.env.BASE_URL}/unete`}>gET iNVolvedD</a></li>
-        </ul>
-      </nav>
+      <Navbar />
     </header>
     <main>
       <slot />
@@ -37,7 +30,7 @@ import "../styles/global.css"
     margin: 0;
   }
   header {
-    background-color: #f9f6fc;
+    /* background-color: #f9f6fc; */
     padding: 10px 20px;
     display: flex;
     align-items: center;
@@ -51,10 +44,6 @@ import "../styles/global.css"
       display: flex;
       list-style-type: none;
       gap: 16px;
-    }
-    a {
-      text-decoration: none;
-      border-bottom: 1px dashed;
     }
   }
 </style>
