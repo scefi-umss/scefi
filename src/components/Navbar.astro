@@ -1,9 +1,19 @@
-<div class="max-lg:collapse w-full rounded-none">
+---
+const { transparent = false } = Astro.props;
+---
+<div class:list={[
+     "max-lg:collapse w-full rounded-none",
+     { "bg-secondary shadow-sm": !transparent }
+     ]}>
   <input id="navbar-1-toggle" class="peer hidden" type="checkbox" />
   <label for="navbar-1-toggle" class="fixed inset-0 hidden max-lg:peer-checked:block"></label>
   <div class="collapse-title navbar">
     <div class="navbar-start">
-      <label for="navbar-1-toggle" class="btn btn-ghost lg:hidden border-0 hover:bg-base-100/10 active:bg-base-100/10">
+      <label for="navbar-1-toggle" class:list={[
+             "btn lg:hidden border-0",
+             { "btn-ghost text-secondary-content hover:bg-base-100/10 active:bg-base-100/10": transparent },
+             { "btn-secondary text-secondary-content": !transparent }
+             ]}>
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
       </label>
     </div>
@@ -16,11 +26,18 @@
       </ul>
     </div>
     <div class="navbar-end">
-    <a href={`${import.meta.env.BASE_URL}/`} class="btn btn-ghost border-0 hover:bg-base-100/10 active:bg-base-100/10 text-xl">Scefi</a>
+      <a href={`${import.meta.env.BASE_URL}/`} class:list={[
+         "btn border-0 text-xl",
+         { "btn-ghost text-secondary-content hover:bg-base-100/10 active:bg-base-100/10": transparent },
+         { "btn-secondary text-secondary-content": !transparent }
+         ]}>Scefi</a>
     </div>
   </div>
 
-  <div class="collapse-content lg:hidden z-1">
+  <div class:list={[
+       "collapse-content lg:hidden z-1",
+       { "bg-secondary/40 backdrop-blur-sm": transparent, "bg-secondary": !transparent }
+       ]}>
     <ul class="menu">
       <li><a href={`${import.meta.env.BASE_URL}/`}>Inicio</a></li>
       <li><a href={`${import.meta.env.BASE_URL}/actividades`}>Actividades</a></li>

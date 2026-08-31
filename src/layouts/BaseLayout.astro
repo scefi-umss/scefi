@@ -1,6 +1,8 @@
 ---
 import "../styles/global.css"
 import Navbar from "../components/Navbar.astro"
+
+const { transparent = false } = Astro.props;
 ---
 <html lang="es">
   <head>
@@ -17,7 +19,7 @@ import Navbar from "../components/Navbar.astro"
   </head>
   <body>
     <header class="fixed inset-x-0 top-0 z-50">
-      <Navbar />
+      <Navbar transparent={transparent} />
     </header>
     <main>
       <slot />
