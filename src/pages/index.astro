@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro"
 import Hero from "../components/Hero.astro"
+import Carousel from "../components/Carousel.astro"
 ---
 
 <BaseLayout transparent>
@@ -10,6 +11,9 @@ import Hero from "../components/Hero.astro"
     <p>Lorem ipsum dolor sit amet consctetur, adipisicing elit. Error.</p>
     <p>Lorem ipsum dolor sit amet consctetur, adipisicing elit. Error.</p>
     <a href={`${import.meta.env.BASE_URL}/sobre-nosotros`}>Conocenos!</a>
+  </div>
+  <div class="flex justify-center">
+    <Carousel />
   </div>
 </BaseLayout>
 
