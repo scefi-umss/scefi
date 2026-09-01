@@ -1,5 +1,9 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro"
+import EventoCard from "../components/EventoCard.astro"
+import ProyectoCard from "../components/ProyectoCard.astro"
+import eventos from "../data/eventos.json"
+import fotoEscuela from "../assets/fotoEscuela.jpg"
 ---
 
 <BaseLayout>
@@ -8,6 +12,26 @@ import BaseLayout from "../layouts/BaseLayout.astro"
     <p>Lorem ipsum dolor sit amet consctetur, adipisicing elit. Error.</p>
     <p>Lorem ipsum dolor sit amet consctetur, adipisicing elit. Error.</p>
     <a href={`${import.meta.env.BASE_URL}/sobre-nosotros`}>Conocenos!</a>
+    <section class="mt-16 text-left">
+      <h2 class="text-3xl font-bold uppercase">Próximos eventos</h2>
+     {eventos.map(evento => (
+        <EventoCard
+          nombre={evento.nombre}
+          fecha={evento.fecha}
+          color={evento.color as 'primary' | 'secondary'}
+        />
+      ))}
+    </section>
+    <section class="mt-16 text-left">
+      <h2 class="text-3xl font-bold uppercase">Proyectos destacados</h2>
+
+      <ProyectoCard
+        titulo="1RA ESCUELA DE INVIERNO"
+        descripcion="Evento realizado el pasado 6 al 24 de julio del 2026, fue una actividad que se realizó con éxito para estudiantes de las carreras.."
+        imagen={fotoEscuela}
+        alt="Aula durante la primera escuela de invierno"
+      />
+    </section>
   </div>
 </BaseLayout>
 
@@ -17,14 +41,15 @@ import BaseLayout from "../layouts/BaseLayout.astro"
   }
   a {
     display: inline-block;
-    background-color: #7a49c5;
-    color: #fff;
-    padding: 6px 10px;
-    border-radius: 2px;
+    background-color: var(--color-primary);
+    color: #000;
+    padding: 12px 28px;
+    border-radius: 9999px;
     text-decoration: none;
     margin-top: 20px;
+    font-size: 1.2em;
   }
   a:hover {
-    background-color: #965ee9;
+    filter: brightness(1.08);
   }
 </style>
