@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar.astro"
 
 const { transparent = false } = Astro.props;
 ---
-<html lang="es">
+<html lang="es" data-theme="scefi">
   <head>
     <meta charset="utf-8" />
     <meta name="robots" content="noindex, nofollow" />
@@ -44,10 +44,10 @@ const { transparent = false } = Astro.props;
     padding: 0 20px;
     box-sizing: border-box;
 
-    h2 {
+    > h2 {
       font-size: 1.8em;
     }
-    p {
+    > p {
       font-size: 1.2em;
     }
   }

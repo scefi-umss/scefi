@@ -1,0 +1,134 @@
+---
+// Carta de Proximos eventos, contador
+interface Props {
+  nombre: string
+  fecha: string                        // formato ISO: "2026-08-30"
+  color?: 'primary' | 'secondary'
+}
+
+const {nombre, fecha, color = 'primary'} = Astro.props
+
+const fondos = {
+  primary: 'bg-primary',
+  secondary: 'bg-secondary'
+}
+
+// Dias restantes calculados mas recuento consulta web
+const MS_POR_DIA = 1000 * 60 * 60 * 24
+const [anio, mes, dia] = fecha.split('-').map(Number)
+const hoy = new Date()
+const diferencia = Date.UTC(anio, mes - 1, dia) - Date.UTC(hoy.getFullYear(), hoy.getMonth(), hoy.getDate())
+const dias = Math.max(0, Math.round(diferencia / MS_POR_DIA))
+
+const fechaLegible = `${String(dia).padStart(2, '0')}/${String(mes).padStart(2, '0')}/${anio}`
+// Pendulo simple intento 1
+const LARGO_PX = 62
+const AMPLITUD_DEG = 35
+const PX_PM = 100
+const G = 9.81
+
+const theta0 = (AMPLITUD_DEG * Math.PI) / 180
+const largoM = LARGO_PX / PX_PM
+const periodo = 2 * Math.PI * Math.sqrt(largoM / G) * (1 + theta0 **2 /16)
+const desfase = LARGO_PX * Math.sin(theta0)
+
+
+---
+
+<article class="relative my-6">
+  <div class:list={['absolute inset-0 translate-x-2 translate-y-3 rounded-3xl', fondos[color]]}></div>
+
+  <div class="relative flex items-center justify-between gap-4 rounded-3xl border-4 border-neutral-700 bg-white px-5 py-4 text-black">
+    <div class="shrink-0">
+      <p class="text-sm leading-none">Faltan...</p>
+      <p class="text-3xl font-bold leading-tight whitespace-nowrap" data-fecha={fecha}>
+        {dias} {dias === 1 ? 'día' : 'días'}
+      </p>
+    </div>
+    <div 
+      class=" pendulo-zona text-center"
+      style={`--largo:${LARGO_PX}px; --amplitud:${AMPLITUD_DEG}deg; --periodo:${periodo}s;
+      --desfase:${desfase}px;`}
+    >
+      <p class="text-lg leading-tight">{nombre}</p>
+      <p class="text-sm">{fechaLegible}</p>
+
+      <div class="pendulo" aria-hidden="true">
+        <div class="cuerda"></div>
+        <div class="lenteja"></div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<script>
+  const MS_POR_DIA = 1000 * 60 * 60 * 24
+
+  document.querySelectorAll<HTMLElement>('[data-fecha]').forEach((el) => {
+    const [anio, mes, dia] = el.dataset.fecha!.split('-').map(Number)
+    const hoy = new Date()
+    const diferencia = Date.UTC(anio, mes - 1, dia) - Date.UTC(hoy.getFullYear(), hoy.getMonth(), hoy.getDate())
+    const dias = Math.max(0, Math.round(diferencia / MS_POR_DIA))
+    el.textContent = `${dias} ${dias === 1 ? 'día' : 'días'}`
+  })
+
+  // Click sobre la carta: detiene o reanuda la oscilacion
+  document.querySelectorAll<HTMLElement>('.pendulo-zona').forEach((zona) => {
+    zona.addEventListener('click', () => {
+      const p = zona.querySelector<HTMLElement>('.pendulo')
+      if (!p) return
+      const corriendo = p.style.animationPlayState !== 'paused'
+      p.style.animationPlayState = corriendo ? 'paused' : 'running'
+    })
+  })
+</script>
+
+<style>
+  .pendulo-zona {
+    position: relative;
+  }
+
+  .pendulo {
+    position: absolute;
+    top: -1rem;
+    left: calc(50% - var(--desfase));
+    width: 0;
+    height: var(--largo);
+    transform-origin: top center;
+    z-index: 5;
+    pointer-events: none;
+    /* alternate recorre medio periodo por pasada: -theta0 -> +theta0 */
+    animation: oscilar calc(var(--periodo) / 2)
+               cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
+  }
+
+  @keyframes oscilar {
+    from { transform: rotate(calc(-1 * var(--amplitud))); }
+    to   { transform: rotate(var(--amplitud)); }
+  }
+
+  .cuerda {
+    position: absolute;
+    top: 0;
+    left: -1px;
+    width: 2px;
+    height: 100%;
+    background: #3f3f46;
+  }
+
+  .lenteja {
+    --radio: 26px;
+    position: absolute;
+    top: calc(100% - var(--radio));
+    left: calc(-1 * var(--radio));
+    width: calc(2 * var(--radio));
+    height: calc(2 * var(--radio));
+    border-radius: 9999px;
+    background: #3f3f46;
+    box-shadow: 0 2px 6px rgb(0 0 0 / 0.35);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pendulo { animation: none; }
+  }
+</style>

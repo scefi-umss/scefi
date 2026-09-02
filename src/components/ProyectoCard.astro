@@ -1,0 +1,26 @@
+---
+// Carta de Proyectos destacados: imagen + etiqueta + descripcion.
+import {Image} from 'astro:assets'
+
+interface Props {
+  titulo: string
+  descripcion: string
+  imagen: ImageMetadata      // import desde src/ 
+  alt?: string
+}
+
+const {titulo, descripcion, imagen, alt} = Astro.props
+---
+
+<article class="my-8 rounded-3xl bg-white/50 p-4">
+  <div class="relative">
+    <Image src={imagen} alt={alt ?? titulo} class="w-full object-cover" />
+    <p class="absolute bottom-0 left-0 translate-y-1/2 bg-secondary px-4 py-2 font-bold text-black">
+      {titulo}
+    </p>
+  </div>
+
+  <p class="bg-primary/40 px-5 pt-8 pb-5 text-center">
+    {descripcion}
+  </p>
+</article>

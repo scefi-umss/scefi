@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @theme {
-  --color-expecard-pi: #f5f3ff;
+  --color-expecard-pi: #faf7e9;
 }
 @plugin "daisyui" {
   themes: scefi --default, scefi-dark --prefersdark;
@@ -11,17 +11,18 @@
   prefersdark: false;
   color-scheme: light;
 
-  --color-base-100: #fef3c6;
-  --color-base-200: #fee685;
-  --color-base-300: #ffd230;
+  --color-base-100: #f6ecc4;
+  --color-base-200: #faf7e9;
+  --color-base-300: #f9f5e4;
   --color-base-content: #000000;
 
-  --color-primary: #fa8c35;
-  --color-secondary: #6dc5c6;
+  --color-primary: #fe8e2f;
+  --color-secondary: #73c3c3;
 
-  --color-accent: #00d3bb;
+  --color-accent: #c9e7e7;
+  --color-neutral: #0f0c39;
 
-  --color-expecard-pi: #f5f3ff;
+  --color-expecard-pi: #faf7e9;
 }
 
 @plugin "daisyui/theme" {
