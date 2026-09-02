@@ -1,10 +1,8 @@
 ---
 import "../styles/global.css"
 import Navbar from "../components/Navbar.astro"
-
-const { transparent = false } = Astro.props;
 ---
-<html lang="es" data-theme="scefi">
+<html lang="es">
   <head>
     <meta charset="utf-8" />
     <meta name="robots" content="noindex, nofollow" />
@@ -18,8 +16,8 @@ const { transparent = false } = Astro.props;
     <title>Scefi</title>
   </head>
   <body>
-    <header class="fixed inset-x-0 top-0 z-50">
-      <Navbar transparent={transparent} />
+    <header class="sticky top-0 z-50">
+      <Navbar />
     </header>
     <main>
       <slot />
@@ -40,14 +38,14 @@ const { transparent = false } = Astro.props;
   .content {
     width: 100%;
     max-width: 1200px;
-    margin: 100px auto 60px;
+    margin: 60px auto 60px;
     padding: 0 20px;
     box-sizing: border-box;
 
-    > h2 {
+    h2 {
       font-size: 1.8em;
     }
-    > p {
+    p {
       font-size: 1.2em;
     }
   }
