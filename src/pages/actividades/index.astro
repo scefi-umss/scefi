@@ -2,18 +2,83 @@
 import { getCollection } from "astro:content"
 import ActividadSeccion from "../../components/ActividadSeccion.astro"
 import BaseLayout from "../../layouts/BaseLayout.astro"
+import Footer from "../../components/Footer.astro"
+import Portada from "../../components/Portada.astro"
 
 const actividades = await getCollection('actividades')
+
+// Categorías de la columna derecha (en celular van debajo de las actividades)
+const categorias = [
+  { nombre: "Cursos", items: [] as string[] },
+  { nombre: "Conversatorios", items: [] as string[] },
+  { nombre: "Concurso de Proyectos", items: ["1ra edición", "2da edición", "3ra edición", "4ta edición"], abierta: true },
+  { nombre: "Actividades extracurriculares", items: [] as string[] },
+]
 ---
 
 <BaseLayout>
-  <div class="content">
-    <h2>Nuestras actividades</h2>
-    <p>Tenemos una variedad de actividades, descubrelas!</p>
-    {actividades.map(actividad => <ActividadSeccion actividad={actividad} />)}
-    {actividades.length < 1 && (
-      <p>No tenemos actividades :( </p>
-    )}
+  <div class="fuente-diseno bg-base-100 text-base-content">
+    <Portada titulo="Nuestra trayectoria" italica />
+
+    <section class="mx-auto max-w-5xl px-4 pt-6 text-center text-xl leading-snug sm:text-2xl">
+      <p>Estela es la huella que deja un cuerpo mientras se desplaza por el espacio.</p>
+      <p>En la SCEFI también hemos ido dejando la nuestra: charlas, talleres, proyectos, encuentros y muchas experiencias.</p>
+      <p>Conoce las actividades que han marcado nuestra trayectoria y descubre la estela que seguimos construyendo juntos:</p>
+    </section>
+
+    <div class="mx-auto grid max-w-7xl gap-12 px-4 py-12 sm:px-6 lg:grid-cols-[1fr_20rem]">
+      <!-- Actividades -->
+      <section>
+        <h2 class="text-3xl uppercase sm:text-4xl">Nuestras actividades</h2>
+        <p class="text-lg opacity-80">Tenemos una variedad de actividades, ¡descúbrelas!</p>
+        {actividades.map((actividad, i) => <ActividadSeccion actividad={actividad} indice={i} />)}
+        {actividades.length < 1 && (
+          <p class="mt-6 text-xl">No tenemos actividades :( </p>
+        )}
+      </section>
+
+      <!-- Categorías desplegables -->
+      <aside class="flex flex-col gap-6 lg:sticky lg:top-24 lg:self-start">
+        {categorias.map((c, i) => (
+          <details
+            class:list={[
+              "categoria rounded-3xl border-[6px] border-neutral-600 bg-white text-black dark:border-white dark:bg-black dark:text-white",
+              i % 2 === 0 ? "sombra-primary" : "sombra-secondary",
+            ]}
+            open={c.abierta}
+          >
+            <summary class="flex cursor-pointer list-none items-center justify-between px-6 py-2 text-2xl lg:text-xl">
+              {c.nombre}
+              <span class="flecha text-xl font-normal" aria-hidden="true">v</span>
+            </summary>
+            <ul class="list-disc px-6 pb-4 pl-12 text-2xl lg:text-xl">
+              {c.items.length > 0
+                ? c.items.map((item) => <li class="py-1">{item}</li>)
+                : <li class="list-none py-1 opacity-60">Próximamente</li>}
+            </ul>
+          </details>
+        ))}
+      </aside>
+    </div>
+
+    <Footer />
   </div>
 </BaseLayout>
 
+<style>
+  .sombra-primary {
+    box-shadow: 10px 10px 0 var(--color-primary);
+  }
+  .sombra-secondary {
+    box-shadow: 10px 10px 0 var(--color-secondary);
+  }
+  .categoria summary::-webkit-details-marker {
+    display: none;
+  }
+  .flecha {
+    transition: transform 0.2s;
+  }
+  .categoria[open] .flecha {
+    transform: rotate(180deg);
+  }
+</style>

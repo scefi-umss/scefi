@@ -1,12 +1,196 @@
 ---
+import { Image } from "astro:assets"
 import BaseLayout from "../layouts/BaseLayout.astro"
+import Footer from "../components/Footer.astro"
+import Portada from "../components/Portada.astro"
+import fotoCristian from "../assets/nucleo/cristian-camata.jpg"
+import fotoJavier from "../assets/nucleo/javier-orellana.jpg"
+import fotoTomas from "../assets/nucleo/tomas-herbas.jpg"
+import fotoNatalia from "../assets/nucleo/natalia.jpg"
+import fotoJoseAlfredo from "../assets/nucleo/jose-alfredo.jpg"
+import fotoCreadores from "../assets/nucleo/creadores.png"
+
+const mesaDirectiva = [
+  {
+    cargo: "Vicepresidente",
+    nombre: "Cristian Camata",
+    areas: "astrofísica estelar, física de la radiación, física teórica, física nuclear",
+    correo: "a",
+    foto: fotoCristian,
+  },
+  {
+    cargo: "Secretario",
+    nombre: "Javier Orellana",
+    areas: "Física Nuclear, Física Médica, Mecánica de fluidos, Óptica",
+    correo: "a",
+    foto: fotoJavier,
+  },
+  // cargo y correo son opcionales: si faltan, esa línea no se muestra
+  {
+    nombre: "Natalia",
+    areas: "Física nuclear, física de partículas y mecánica cuántica",
+    foto: fotoNatalia,
+  },
+  {
+    nombre: "José Alfredo",
+    areas: "Física médica y física nuclear",
+    foto: fotoJoseAlfredo,
+  },
+] as { cargo?: string; nombre: string; areas: string; correo?: string; foto: ImageMetadata }[]
+
+const miembrosHonorarios = [
+  { nombre: "Tomas Herbas", cargo: "Presidente - 2026", foto: fotoTomas },
+  { nombre: "Tomas Herbas", cargo: "Presidente - 2026", foto: fotoTomas },
+  { nombre: "Tomas Herbas", cargo: "Presidente - 2026", foto: fotoTomas },
+  { nombre: "Tomas Herbas", cargo: "Presidente - 2026", foto: fotoTomas },
+  { nombre: "Tomas Herbas", cargo: "Presidente - 2026", foto: fotoTomas },
+  { nombre: "Tomas Herbas", cargo: "Presidente - 2026", foto: fotoTomas },
+]
+
+const creadores = [
+  { nombre: "Tomas", rol: "supervisor" },
+  { nombre: "Abdul", rol: "diseño" },
+  { nombre: "Brian", rol: "programación" },
+  { nombre: "Micaela", rol: "programación" },
+  { nombre: "Natalia", rol: "diseño" },
+  { nombre: "Valeria", rol: "diseño" },
+]
 ---
 
 <BaseLayout>
-  <div class="content">
-    <h2>Sobre nosotros</h2>
-    <p>Nuestra visión tiene una visión muy visionaria</p>
-    <p>Nuestra misión tiene magnitud y dirección</p>
-    <a href={`${import.meta.env.BASE_URL}/sobre-nosotros`}>Conocenos!</a>
+  <div class="fuente-diseno bg-base-100 text-base-content">
+    <Portada titulo="¡Conoce a la SCEFI!" />
+
+    <!-- Quiénes somos -->
+    <section class="mx-auto max-w-6xl px-4 sm:px-10">
+      <div class="burbuja relative -mt-6 px-6 py-8 sm:-mt-10 sm:px-12 sm:py-10">
+        <p class="text-left text-xl sm:text-justify leading-relaxed sm:text-3xl">
+          La Sociedad Científica de Estudiantes de Física (SCEFI) es una organización estudiantil que busca
+          estimular la iniciación de los estudiantes en los procesos de la investigación y con ello contribuir
+          al desarrollo sostenible del país por medio de la investigación científica para generar, verificar y
+          difundir el conocimiento científico y así contribuir al avance y desarrollo de la ciencia. Nuestra
+          visión es, ser una organización referente en investigación y divulgación científica. En base a la
+          ética, abocada al desarrollo del conocimiento científico, cultural, social, tecnológico y a la
+          investigación aplicada para tener un impacto sustancial en la resolución de los problemas
+          contemporáneos, así favorecer el buen desarrollo sostenible en la comunidad Boliviana.
+        </p>
+      </div>
+    </section>
+
+    <!-- Mesa directiva -->
+    <section class="mx-auto max-w-6xl px-4 pt-12 sm:px-6">
+      <h2 class="subtitulo px-4 sm:px-14">Mesa directiva:</h2>
+      <ul class="mt-6 flex flex-col gap-10">
+        {mesaDirectiva.map((m, i) => {
+          const invertido = i % 2 === 1
+          return (
+            <li class:list={["flex flex-col items-center gap-4 sm:flex-row sm:gap-0", invertido && "sm:flex-row-reverse"]}>
+              <div class:list={["foto-marco relative z-10 shrink-0", invertido ? "sombra-secondary" : "sombra-primary"]}>
+                <Image src={m.foto} alt={m.nombre} class="h-56 w-56 object-cover object-top sm:h-64 sm:w-72" />
+              </div>
+              <div
+                class:list={[
+                  "w-full bg-base-200 px-8 py-6 text-xl leading-relaxed sm:py-8 sm:text-3xl",
+                  invertido
+                    ? "rounded-3xl sm:-mr-8 sm:rounded-l-[5rem] sm:rounded-r-none sm:pr-16"
+                    : "rounded-3xl sm:-ml-8 sm:rounded-l-none sm:rounded-r-[5rem] sm:pl-20",
+                ]}
+              >
+                {m.cargo && <p>{m.cargo}</p>}
+                <p>{m.nombre}</p>
+                <p>Áreas de interés: {m.areas}</p>
+                {m.correo && <p>Gmail: {m.correo}</p>}
+              </div>
+            </li>
+          )
+        })}
+      </ul>
+
+      <div class="mt-12 flex justify-center">
+        <a
+          href="#miembros-honorarios"
+          class="rounded-full bg-primary px-6 py-3 text-center text-2xl text-black transition hover:brightness-110 sm:text-3xl"
+        >
+          ¿Quieres conocer a más estrellas?
+        </a>
+      </div>
+    </section>
+
+    <!-- Miembros honorarios -->
+    <section id="miembros-honorarios" class="mx-auto max-w-7xl scroll-mt-20 px-4 py-12 sm:px-8">
+      <h2 class="subtitulo px-4 sm:px-10">Miembros honorarios:</h2>
+      <ul class="mt-8 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 lg:grid-cols-6">
+        {miembrosHonorarios.map((m) => (
+          <li class="honorario relative flex flex-col items-center">
+            <Image src={m.foto} alt={m.nombre} class="relative z-10 aspect-[3/4] w-4/5 object-cover" />
+            <div class="relative z-10 -mt-4 w-full">
+              <span class="block w-3/4 bg-secondary px-3 py-0.5 text-sm text-black">{m.nombre}</span>
+              <span class="ml-[8%] block bg-primary/50 px-3 pb-1 pt-0.5 text-center text-sm text-black">
+                {m.cargo}
+              </span>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- Creadores de la página -->
+    <section class="bg-base-200 py-6">
+      <div class="mx-auto flex max-w-4xl flex-col items-center gap-6 px-4 sm:flex-row sm:items-start">
+        <Image src={fotoCreadores} alt="Equipo creador de la página web" class="w-full max-w-sm object-cover" />
+        <div>
+          <h2 class="subtitulo">Creadores de la página web</h2>
+          <ul class="mt-2 text-xl leading-tight">
+            {creadores.map((c) => <li>{c.nombre} - {c.rol}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <Footer />
   </div>
 </BaseLayout>
+
+<style>
+  .subtitulo {
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    text-transform: uppercase;
+  }
+
+  /* Recuadro de texto con forma irregular, como en el diseño */
+  .burbuja::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: var(--color-base-200);
+    border-radius: 3rem 3rem 5rem 3rem;
+    transform: rotate(-1.5deg) skewX(-3deg);
+  }
+  .burbuja > * {
+    position: relative;
+  }
+
+  /* Marco gris de las fotos de la mesa directiva, con sombra de color desplazada */
+  .foto-marco {
+    border: 10px solid #555;
+    border-radius: 1.75rem;
+    overflow: hidden;
+  }
+  .sombra-primary {
+    box-shadow: 14px 14px 0 var(--color-primary);
+  }
+  .sombra-secondary {
+    box-shadow: 14px 14px 0 var(--color-secondary);
+  }
+
+  /* Forma clara detrás de cada miembro honorario */
+  .honorario::before {
+    content: "";
+    position: absolute;
+    inset: -1rem 0 1rem;
+    background: var(--color-base-200);
+    border-radius: 2rem;
+    transform: skewX(-12deg);
+  }
+</style>

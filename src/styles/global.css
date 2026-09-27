@@ -1,4 +1,35 @@
 @import "tailwindcss";
+
+/* Tipografía de los diseños nuevos (Núcleo, Estela): Oswald en vez de Poppins */
+.fuente-diseno,
+.fuente-diseno * {
+  font-family: "Oswald", sans-serif;
+}
+.fuente-diseno {
+  font-weight: 300;
+}
+
+/* Recuadro inclinado de fondo (claro en modo claro, gris en modo oscuro).
+   El ángulo se ajusta con la variable --giro, p. ej. style="--giro: -4deg" */
+.caja-inclinada {
+  position: relative;
+  isolation: isolate;
+}
+.caja-inclinada::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--color-base-200);
+  border-radius: 3rem;
+  transform: rotate(var(--giro, 4deg));
+}
+@media (prefers-color-scheme: dark) {
+  .caja-inclinada::before {
+    background: var(--color-accent);
+  }
+}
+
 @theme {
   --color-expecard-pi: #faf7e9;
 }

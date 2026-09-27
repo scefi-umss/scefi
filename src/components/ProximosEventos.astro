@@ -1,0 +1,60 @@
+---
+// Lista de próximos eventos. Los eventos cuya fecha ya pasó no se muestran;
+// si no queda ninguno, aparece el agujero negro girando con un aviso.
+import { Image } from "astro:assets"
+import EventoCard from "./EventoCard.astro"
+import eventos from "../data/eventos.json"
+import agujeroNegro from "../assets/agujero-negro.png"
+
+// Un evento sigue vigente hasta el final de su día
+const yaPaso = (fecha: string) => {
+  const [anio, mes, dia] = fecha.split("-").map(Number)
+  const hoy = new Date()
+  return Date.UTC(anio, mes - 1, dia) < Date.UTC(hoy.getFullYear(), hoy.getMonth(), hoy.getDate())
+}
+
+// Filtro al generar la página; el script de abajo repite el filtro en el navegador,
+// porque el sitio es estático y un evento puede vencer después de publicarlo.
+const vigentes = eventos.filter((e) => !yaPaso(e.fecha))
+---
+
+<div class="proximos-eventos">
+  {vigentes.map((evento) => (
+    <EventoCard
+      nombre={evento.nombre}
+      fecha={evento.fecha}
+      color={evento.color as 'primary' | 'secondary'}
+    />
+  ))}
+
+  <div class:list={["sin-eventos flex flex-col items-center py-6 text-center", vigentes.length > 0 && "hidden"]}>
+    <Image src={agujeroNegro} alt="" class="agujero-negro w-40 sm:w-48" />
+    <p class="mt-4 text-2xl">No hay Eventos Próximos (por ahora)</p>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>(".proximos-eventos").forEach((lista) => {
+    const hoy = new Date()
+    const hoyUTC = Date.UTC(hoy.getFullYear(), hoy.getMonth(), hoy.getDate())
+    let quedan = 0
+    lista.querySelectorAll<HTMLElement>("[data-evento-fecha]").forEach((evento) => {
+      const [anio, mes, dia] = evento.dataset.eventoFecha!.split("-").map(Number)
+      if (Date.UTC(anio, mes - 1, dia) < hoyUTC) evento.remove()
+      else quedan++
+    })
+    lista.querySelector(".sin-eventos")?.classList.toggle("hidden", quedan > 0)
+  })
+</script>
+
+<style>
+  .agujero-negro {
+    animation: girar 40s linear infinite;
+  }
+  @keyframes girar {
+    to { transform: rotate(360deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .agujero-negro { animation: none; }
+  }
+</style>

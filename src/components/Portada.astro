@@ -1,0 +1,44 @@
+---
+// Foto de portada con título grande y borde inferior inclinado (diseños Núcleo y Estela)
+import { Image } from "astro:assets"
+import fotoGrupo from "../assets/nucleo/grupo.png"
+
+interface Props {
+  titulo: string
+  italica?: boolean   // en modo claro el título de Estela va en cursiva
+}
+
+const { titulo, italica = false } = Astro.props
+---
+<section class="portada relative">
+  <Image
+    src={fotoGrupo}
+    alt="Integrantes de la SCEFI"
+    class="h-[55vh] max-h-[36rem] min-h-72 w-full object-cover sm:h-[70vh]"
+    loading="eager"
+  />
+  <h1
+    class:list={[
+      "titulo absolute inset-0 flex items-center justify-center px-4 text-center font-bold uppercase text-black dark:text-white",
+      italica && "italic dark:not-italic",
+    ]}
+  >
+    {titulo}
+  </h1>
+</section>
+
+<style>
+  .portada {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 75% 91%, 0 100%);
+  }
+  .titulo {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    line-height: 1.05;
+    text-shadow: 5px 5px 0 rgb(0 0 0 / 0.45);
+  }
+  @media (prefers-color-scheme: dark) {
+    .titulo {
+      text-shadow: 5px 5px 0 rgb(120 120 130 / 0.8);
+    }
+  }
+</style>
