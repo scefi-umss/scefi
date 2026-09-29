@@ -71,8 +71,8 @@ const [destacada, ...resto] = actividades
             apoyar nuestros proyectos o compartir una idea. Encuentra tu forma de ser parte.
           </p>
           <div class="mt-8 text-center">
-            <Boton href={base("/unete")} class="meteorito-boton relative">
-              <Image src={meteorito} alt="" class="meteorito pointer-events-none absolute -left-7 -top-7 w-14" />
+            <Boton href={base("/unete")} class="group relative">
+              <Image src={meteorito} alt="" class="pointer-events-none absolute -left-7 -top-7 w-14 transition-transform duration-200 group-hover:translate-x-[3px] group-hover:translate-y-[3px]" />
               Gravita hacia nosotros
             </Boton>
           </div>
@@ -81,12 +81,3 @@ const [destacada, ...resto] = actividades
     </section>
   </div>
 </BaseLayout>
-
-<style>
-  .meteorito-boton:hover .meteorito {
-    transform: translate(3px, 3px);
-  }
-  .meteorito {
-    transition: transform 0.2s;
-  }
-</style>
