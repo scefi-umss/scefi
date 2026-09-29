@@ -1,8 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Footer from '../../components/Footer.astro';
 import { render } from 'astro:content';
+import { base } from '../../lib/url';
 
 export async function getStaticPaths() {
   const actividades = await getCollection('actividades')
@@ -20,7 +20,7 @@ const {Content} = await render(actividad)
 <BaseLayout>
   <div class="bg-base-100 text-base-content">
     <div class="mx-auto max-w-4xl px-4 py-12">
-      <a href={`${import.meta.env.BASE_URL}/actividades`} class="text-lg underline decoration-dashed decoration-2">
+      <a href={base("/actividades")} class="text-lg underline decoration-dashed decoration-2">
         ← Volver a Estela
       </a>
       <div class="detalle mt-6 rounded-3xl bg-base-200 px-6 py-8 text-lg sm:px-10 dark:bg-accent">
@@ -29,7 +29,6 @@ const {Content} = await render(actividad)
         <Content />
       </div>
     </div>
-    <Footer />
   </div>
 </BaseLayout>
 

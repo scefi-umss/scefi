@@ -1,6 +1,7 @@
 ---
 // Menú principal. "pista" es el texto que aparece junto al mouse al pasar sobre el enlace
 // (en celular, donde no hay mouse, se muestra debajo del nombre).
+import { base } from "../lib/url"
 const enlaces = [
   { nombre: "Inicio", ruta: "/" },
   { nombre: "Núcleo", ruta: "/sobre-nosotros", pista: "Nosotros" },
@@ -8,7 +9,7 @@ const enlaces = [
   { nombre: "¡Orbita!", ruta: "/unete", pista: "¡Únete!" },
 ]
 ---
-<div class="max-lg:collapse w-full rounded-none bg-secondary shadow-sm">
+<nav class="navbar-raiz max-lg:collapse w-full rounded-none bg-secondary shadow-sm">
   <input id="navbar-1-toggle" class="peer hidden" type="checkbox" />
   <label for="navbar-1-toggle" class="fixed inset-0 hidden max-lg:peer-checked:block"></label>
   <div class="collapse-title navbar">
@@ -20,12 +21,12 @@ const enlaces = [
     <div class="navbar-center hidden lg:flex">
       <ul class="menu menu-horizontal px-1">
         {enlaces.map((e) => (
-          <li><a href={`${import.meta.env.BASE_URL}${e.ruta}`} data-pista={e.pista}>{e.nombre}</a></li>
+          <li><a href={base(e.ruta)} data-pista={e.pista}>{e.nombre}</a></li>
         ))}
       </ul>
     </div>
     <div class="navbar-end">
-      <a href={`${import.meta.env.BASE_URL}/`} class="btn border-0 text-xl btn-secondary text-secondary-content">Scefi
+      <a href={base("/")} class="btn border-0 text-xl btn-secondary text-secondary-content">Scefi
       </a>
     </div>
   </div>
@@ -34,7 +35,7 @@ const enlaces = [
     <ul class="menu">
       {enlaces.map((e) => (
         <li>
-          <a href={`${import.meta.env.BASE_URL}${e.ruta}`} class="flex flex-col items-start gap-0">
+          <a href={base(e.ruta)} class="flex flex-col items-start gap-0">
             {e.nombre}
             {e.pista && <span class="text-xs opacity-70">{e.pista}</span>}
           </a>
@@ -42,24 +43,27 @@ const enlaces = [
       ))}
     </ul>
   </div>
-</div>
 
-<div id="navbar-pista" class="pointer-events-none fixed z-[60] hidden rounded-full bg-primary px-3 py-1 text-sm text-black shadow-md dark:text-white" role="tooltip"></div>
+  <div class="navbar-pista pointer-events-none fixed z-[60] hidden rounded-full bg-primary px-3 py-1 text-sm text-black shadow-md dark:text-white" role="tooltip"></div>
+</nav>
 
 <script>
-  // Muestra la "pista" de cada enlace junto al mouse mientras está encima
-  const pista = document.getElementById("navbar-pista")
-  document.querySelectorAll<HTMLElement>("[data-pista]").forEach((enlace) => {
-    enlace.addEventListener("mouseenter", () => {
-      if (!pista) return
-      pista.textContent = enlace.dataset.pista ?? ""
-      pista.classList.remove("hidden")
+  // Muestra la "pista" de cada enlace junto al mouse mientras está encima.
+  // Alcance limitado a esta barra para no chocar con otras instancias.
+  document.querySelectorAll<HTMLElement>(".navbar-raiz").forEach((raiz) => {
+    const pista = raiz.querySelector<HTMLElement>(".navbar-pista")
+    raiz.querySelectorAll<HTMLElement>("[data-pista]").forEach((enlace) => {
+      enlace.addEventListener("mouseenter", () => {
+        if (!pista || !enlace.dataset.pista) return
+        pista.textContent = enlace.dataset.pista
+        pista.classList.remove("hidden")
+      })
+      enlace.addEventListener("mousemove", (ev) => {
+        if (!pista) return
+        pista.style.left = `${ev.clientX + 14}px`
+        pista.style.top = `${ev.clientY + 18}px`
+      })
+      enlace.addEventListener("mouseleave", () => pista?.classList.add("hidden"))
     })
-    enlace.addEventListener("mousemove", (ev) => {
-      if (!pista) return
-      pista.style.left = `${ev.clientX + 14}px`
-      pista.style.top = `${ev.clientY + 18}px`
-    })
-    enlace.addEventListener("mouseleave", () => pista?.classList.add("hidden"))
   })
 </script>

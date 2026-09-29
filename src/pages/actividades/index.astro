@@ -2,7 +2,6 @@
 import { getCollection } from "astro:content"
 import ActividadSeccion from "../../components/ActividadSeccion.astro"
 import BaseLayout from "../../layouts/BaseLayout.astro"
-import Footer from "../../components/Footer.astro"
 import Portada from "../../components/Portada.astro"
 
 const actividades = await getCollection('actividades')
@@ -60,18 +59,10 @@ const categorias = [
         ))}
       </aside>
     </div>
-
-    <Footer />
   </div>
 </BaseLayout>
 
 <style>
-  .sombra-primary {
-    box-shadow: 10px 10px 0 var(--color-primary);
-  }
-  .sombra-secondary {
-    box-shadow: 10px 10px 0 var(--color-secondary);
-  }
   .categoria summary::-webkit-details-marker {
     display: none;
   }

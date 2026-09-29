@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets"
 import BaseLayout from "../layouts/BaseLayout.astro"
+import Boton from "../components/Boton.astro"
 import Carousel from "../components/Carousel.astro"
 import fotoEscuela from "../assets/fotoEscuela.jpg"
 import Hero from "../components/Hero.astro"
@@ -8,8 +9,7 @@ import ProyectoCard from "../components/ProyectoCard.astro"
 import ProximosEventos from "../components/ProximosEventos.astro"
 import logoScefi from "../assets/nucleo/logo-scefi-grande.png"
 import meteorito from "../assets/meteorito.png"
-
-const base = import.meta.env.BASE_URL
+import { base } from "../lib/url"
 ---
 
 <BaseLayout>
@@ -26,7 +26,7 @@ const base = import.meta.env.BASE_URL
           Investigamos, creamos y compartimos ciencia, construyendo juntos nuevas formas de aprender y hacer Física.
         </p>
       </div>
-      <a href={`${base}/sobre-nosotros`} class="boton mt-8">Entra en nuestro campo</a>
+      <Boton href={base("/sobre-nosotros")} class="mt-8">Entra en nuestro campo</Boton>
     </section>
 
     <!-- 1.2 Próximos eventos -->
@@ -48,7 +48,7 @@ const base = import.meta.env.BASE_URL
         <Carousel />
       </div>
       <div class="text-center">
-        <a href={`${base}/actividades`} class="boton mt-8">Ve nuestra estela</a>
+        <Boton href={base("/actividades")} class="mt-8">Ve nuestra estela</Boton>
       </div>
     </section>
 
@@ -63,10 +63,10 @@ const base = import.meta.env.BASE_URL
             apoyar nuestros proyectos o compartir una idea. Encuentra tu forma de ser parte.
           </p>
           <div class="mt-8 text-center">
-            <a href={`${base}/unete`} class="boton relative">
+            <Boton href={base("/unete")} class="meteorito-boton relative">
               <Image src={meteorito} alt="" class="meteorito pointer-events-none absolute -left-7 -top-7 w-14" />
               Gravita hacia nosotros
-            </a>
+            </Boton>
           </div>
         </div>
       </div>
@@ -75,25 +75,7 @@ const base = import.meta.env.BASE_URL
 </BaseLayout>
 
 <style>
-  .boton {
-    display: inline-block;
-    border-radius: 9999px;
-    background-color: var(--color-primary);
-    color: #000;
-    padding: 0.6rem 1.75rem;
-    font-size: 1.75rem;
-    text-decoration: none;
-    transition: filter 0.2s;
-  }
-  .boton:hover {
-    filter: brightness(1.08);
-  }
-  @media (prefers-color-scheme: dark) {
-    .boton {
-      color: #fff;
-    }
-  }
-  .boton:hover .meteorito {
+  .meteorito-boton:hover .meteorito {
     transform: translate(3px, 3px);
   }
   .meteorito {
