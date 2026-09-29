@@ -36,11 +36,6 @@ const { titulo, italica = false, imagen = fotoGrupo, alt = "Integrantes de la SC
   .titulo {
     font-size: clamp(2.5rem, 8vw, 6rem);
     line-height: 1.05;
-    text-shadow: 5px 5px 0 rgb(0 0 0 / 0.45);
-  }
-  @media (prefers-color-scheme: dark) {
-    .titulo {
-      text-shadow: 5px 5px 0 rgb(120 120 130 / 0.8);
-    }
+    text-shadow: 5px 5px 0 var(--color-portada-sombra);
   }
 </style>

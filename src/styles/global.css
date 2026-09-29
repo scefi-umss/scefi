@@ -55,6 +55,9 @@
   /* Panel de las cajas inclinadas en modo claro */
   --color-panel: #faf7e9;
 
+  /* Sombra del título de Portada en modo claro */
+  --color-portada-sombra: rgb(0 0 0 / 0.45);
+
   --color-expecard-pi: #faf7e9;
 }
 
@@ -76,6 +79,9 @@
 
   /* Panel de las cajas inclinadas en modo oscuro (gris, no índigo) */
   --color-panel: #40444a;
+
+  /* Sombra del título de Portada en modo oscuro */
+  --color-portada-sombra: rgb(120 120 130 / 0.8);
 
   --color-expecard-pi: #c7a1f6;
 }
