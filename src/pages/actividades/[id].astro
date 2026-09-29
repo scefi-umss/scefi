@@ -1,7 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from "astro:assets"
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { render } from 'astro:content';
+import { base } from '../../lib/url';
 
 export async function getStaticPaths() {
   const actividades = await getCollection('actividades')
@@ -17,9 +19,37 @@ const {Content} = await render(actividad)
 ---
 
 <BaseLayout>
-  <div class="content">
-    <h2>{actividad.data.name}</h2>
-    <h4>{actividad.data.organizer}</h4>
-    <Content />
+  <div class="bg-base-100 text-base-content">
+    <div class="mx-auto max-w-4xl px-4 py-12">
+      <a href={base("/actividades")} class="text-lg underline decoration-dashed decoration-2">
+        ← Volver a Estela
+      </a>
+      <div class="detalle mt-6 rounded-3xl bg-base-200 px-6 py-8 text-lg sm:px-10 dark:bg-accent">
+        <h2 class="text-3xl uppercase sm:text-4xl">{actividad.data.name}</h2>
+        <h4 class="mb-4 text-xl opacity-80">Organiza: {actividad.data.organizer}</h4>
+        {actividad.data.image && (
+          <Image src={actividad.data.image} alt={actividad.data.name} class="w-full object-cover" />
+        )}
+        <Content />
+      </div>
+    </div>
   </div>
 </BaseLayout>
+
+<style>
+  /* Estilos para el contenido Markdown de cada actividad */
+  .detalle :global(h3) {
+    margin-top: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 400;
+  }
+  .detalle :global(img) {
+    margin-top: 0.75rem;
+    max-width: 100%;
+    height: auto;
+    background: #fff;
+  }
+  .detalle :global(p) {
+    margin-top: 0.5rem;
+  }
+</style>

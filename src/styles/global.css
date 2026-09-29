@@ -1,4 +1,35 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: "Oswald", ui-sans-serif, system-ui, sans-serif;
+  --color-expecard-pi: #faf7e9;
+}
+
+/* Recuadro inclinado de fondo. El ángulo se ajusta con --giro.
+   El color sale de --color-panel, definido por tema (claro = base-200,
+   oscuro = gris accent): no usar @media aquí, el tema ya conmuta. */
+.caja-inclinada {
+  position: relative;
+  isolation: isolate;
+}
+.caja-inclinada::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--color-panel);
+  border-radius: 3rem;
+  transform: rotate(var(--giro, 4deg));
+}
+
+/* Sombra dura desplazada (diseños Núcleo/Estela). Una sola definición. */
+.sombra-primary {
+  box-shadow: 10px 10px 0 var(--color-primary);
+}
+.sombra-secondary {
+  box-shadow: 10px 10px 0 var(--color-secondary);
+}
+
 @theme {
   --color-expecard-pi: #faf7e9;
 }
@@ -21,6 +52,12 @@
 
   --color-accent: #c9e7e7;
 
+  /* Panel de las cajas inclinadas en modo claro */
+  --color-panel: #faf7e9;
+
+  /* Sombra del título de Portada en modo claro */
+  --color-portada-sombra: rgb(0 0 0 / 0.45);
+
   --color-expecard-pi: #faf7e9;
 }
 
@@ -39,6 +76,12 @@
   --color-secondary: #352c6f;
 
   --color-accent: #40444a;
+
+  /* Panel de las cajas inclinadas en modo oscuro (gris, no índigo) */
+  --color-panel: #40444a;
+
+  /* Sombra del título de Portada en modo oscuro */
+  --color-portada-sombra: rgb(120 120 130 / 0.8);
 
   --color-expecard-pi: #c7a1f6;
 }

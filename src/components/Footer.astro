@@ -1,0 +1,43 @@
+---
+import { Image } from "astro:assets"
+import RedesSociales from "./RedesSociales.astro"
+import logoUmss from "../assets/nucleo/logo-umss.png"
+import logoScefi from "../assets/nucleo/logo-scefi-grande.png"
+
+const ubicacion = "Calle Sucre, frente al parque La Torre. Universidad Mayor de San Simón - Facultad de Ciencias y Tecnología"
+const anio = new Date().getFullYear()
+---
+<footer class="bg-secondary text-black dark:text-white">
+  <!-- Celular: panel claro con el logo grande a la izquierda -->
+  <div class="relative overflow-hidden sm:hidden">
+    <div class="panel absolute inset-y-0 left-0 w-3/5 bg-white/40"></div>
+    <div class="relative flex gap-4 px-4 pb-10 pt-8">
+      <Image src={logoScefi} alt="Logo de la SCEFI" class="w-2/5 self-start" />
+      <div class="flex-1">
+        <Image src={logoUmss} alt="Escudo de la UMSS" class="float-right ml-2 h-16 w-auto" />
+        <p class="text-2xl leading-snug">Ubicación</p>
+        <p class="text-lg leading-snug">{ubicacion}</p>
+        <RedesSociales class="mt-3" />
+        <p class="mt-2 text-base">© Copyright {anio} - SCEFI</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PC -->
+  <div class="mx-auto hidden max-w-6xl items-center justify-between gap-6 px-10 py-6 sm:flex">
+    <div class="flex flex-col gap-3">
+      <RedesSociales />
+      <p class="text-xl">Ubicación: {ubicacion}</p>
+      <p class="text-sm">© Copyright {anio} - SCEFI</p>
+    </div>
+    <Image src={logoUmss} alt="Escudo de la UMSS" class="h-28 w-auto shrink-0" />
+  </div>
+</footer>
+
+<style>
+  /* Panel claro con borde inclinado, como en el diseño de celular */
+  .panel {
+    clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%);
+    border-bottom-right-radius: 3rem;
+  }
+</style>

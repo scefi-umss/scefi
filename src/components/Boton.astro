@@ -1,0 +1,15 @@
+---
+// Botón píldora primario. Reemplaza los `.boton` sueltos de cada página.
+interface Props {
+  href: string
+  class?: string
+}
+const { href, class: clase } = Astro.props
+---
+<a
+  href={href}
+  class:list={[
+    "inline-block rounded-full bg-primary px-7 py-2 text-center text-[1.75rem] leading-snug text-black transition hover:brightness-110 dark:text-white",
+    clase,
+  ]}
+><slot /></a>

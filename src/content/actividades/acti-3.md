@@ -1,9 +1,9 @@
 ---
 name: "Canal de youtube con 4.000.000.000 de subscriptores"
 organizer: "Abdul"
+image: ./clipboard_image.png
+description: "Descripción descripción Descripción descripción Descripción descripción Descripción descripción"
+fecha: 2025-09-20
 ---
-### Diagrama del proyecto
-![System Diagram](./clipboard_image.png)
-
 ### Descripción
 Descripción descripción Descripción descripción Descripción descripción Descripción descripción

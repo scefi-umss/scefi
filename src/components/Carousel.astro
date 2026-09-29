@@ -1,62 +1,25 @@
 ---
+// Carrusel de actividades destacadas. Recibe la lista desde la página
+// (colección `actividades` ordenada): nada hardcodeado aquí.
+import type { CollectionEntry } from "astro:content"
 import ProyectoCard from "./ProyectoCard.astro"
-import fotoEscuela from "../assets/fotoEscuela.jpg"
+import { base } from "../lib/url"
+
+interface Props {
+  actividades: CollectionEntry<"actividades">[]
+}
+const { actividades } = Astro.props
 ---
 <div class="carousel carousel-center bg-neutral rounded-box max-w-4xl space-x-4 p-4">
-  <div class="carousel-item w-90">
+  {actividades.map((actividad) => (
+    <div class="carousel-item w-90">
       <ProyectoCard
-        titulo="1RA ESCUELA DE INVIERNO"
-        descripcion="Evento realizado el pasado 6 al 24 de julio del 2026, fue una actividad que se realizó con éxito para estudiantes de las carreras.."
-        imagen={fotoEscuela}
-        alt="Aula durante la primera escuela de invierno"
+        titulo={actividad.data.name}
+        descripcion={actividad.data.description ?? ""}
+        imagen={actividad.data.image}
+        alt={actividad.data.name}
+        href={base(`/actividades/${actividad.id}`)}
       />
-  </div>
-  <div class="carousel-item w-90">
-      <ProyectoCard
-        titulo="2RA ESCUELA DE INVIERNO"
-        descripcion="Evento realizado el pasado 6 al 24 de julio del 2026, fue una actividad que se realizó con éxito para estudiantes de las carreras.."
-        imagen={fotoEscuela}
-        alt="Aula durante la primera escuela de invierno"
-      />
-  </div>
-  <div class="carousel-item w-90">
-      <ProyectoCard
-        titulo="3RA ESCUELA DE INVIERNO"
-        descripcion="Evento realizado el pasado 6 al 24 de julio del 2026, fue una actividad que se realizó con éxito para estudiantes de las carreras.."
-        imagen={fotoEscuela}
-        alt="Aula durante la primera escuela de invierno"
-      />
-  </div>
-  <div class="carousel-item w-90">
-      <ProyectoCard
-        titulo="4RA ESCUELA DE INVIERNO"
-        descripcion="Evento realizado el pasado 6 al 24 de julio del 2026, fue una actividad que se realizó con éxito para estudiantes de las carreras.."
-        imagen={fotoEscuela}
-        alt="Aula durante la primera escuela de invierno"
-      />
-  </div>
-  <div class="carousel-item w-90">
-      <ProyectoCard
-        titulo="5RA ESCUELA DE INVIERNO"
-        descripcion="Evento realizado el pasado 6 al 24 de julio del 2026, fue una actividad que se realizó con éxito para estudiantes de las carreras.."
-        imagen={fotoEscuela}
-        alt="Aula durante la primera escuela de invierno"
-      />
-  </div>
-  <div class="carousel-item w-90">
-      <ProyectoCard
-        titulo="6RA ESCUELA DE INVIERNO"
-        descripcion="Evento realizado el pasado 6 al 24 de julio del 2026, fue una actividad que se realizó con éxito para estudiantes de las carreras.."
-        imagen={fotoEscuela}
-        alt="Aula durante la primera escuela de invierno"
-      />
-  </div>
-  <div class="carousel-item w-90">
-      <ProyectoCard
-        titulo="7RA ESCUELA DE INVIERNO"
-        descripcion="Evento realizado el pasado 6 al 24 de julio del 2026, fue una actividad que se realizó con éxito para estudiantes de las carreras.."
-        imagen={fotoEscuela}
-        alt="Aula durante la primera escuela de invierno"
-      />
-  </div>
+    </div>
+  ))}
 </div>

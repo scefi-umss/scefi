@@ -1,0 +1,72 @@
+---
+// Lista de próximos eventos. Lee la colección `eventos` (única fuente),
+// muestra los vigentes más cercanos hasta `limite`; si no queda ninguno,
+// aparece el agujero negro girando con un aviso.
+import { Image } from "astro:assets"
+import EventoCard from "./EventoCard.astro"
+import { getEventosVigentes } from "../lib/eventos"
+import agujeroNegro from "../assets/agujero-negro.png"
+
+interface Props {
+  limite?: number // cuántos eventos vigentes mostrar (homepage: 5)
+}
+const { limite = Number.POSITIVE_INFINITY } = Astro.props
+
+// Filtro + orden al generar la página; el script de abajo repite el filtro en
+// el navegador, porque el sitio es estático y un evento puede vencer después
+// de publicarlo.
+const vigentes = await getEventosVigentes(limite)
+---
+
+<div class="proximos-eventos">
+  {vigentes.map((evento) => (
+    <EventoCard
+      nombre={evento.data.nombre}
+      fecha={evento.data.fecha}
+      color={evento.data.color}
+    />
+  ))}
+
+  <div class:list={["sin-eventos flex flex-col items-center py-6 text-center", vigentes.length > 0 && "hidden"]}>
+    <Image src={agujeroNegro} alt="" class="agujero-negro w-40 sm:w-48" />
+    <p class="mt-4 text-2xl">No hay Eventos Próximos (por ahora)</p>
+  </div>
+</div>
+
+<script>
+  // Único script por lista: actualiza los contadores y retira los vencidos.
+  // Misma regla que en src/lib/fechas.ts (duplicada aquí porque corre en cliente).
+  import { MS_POR_DIA } from "../lib/fechas"
+
+  document.querySelectorAll<HTMLElement>(".proximos-eventos").forEach((lista) => {
+    const hoy = new Date()
+    const hoyUTC = Date.UTC(hoy.getFullYear(), hoy.getMonth(), hoy.getDate())
+    let quedan = 0
+    lista.querySelectorAll<HTMLElement>("[data-evento-fecha]").forEach((evento) => {
+      const [anio, mes, dia] = evento.dataset.eventoFecha!.split("-").map(Number)
+      if (Date.UTC(anio, mes - 1, dia) < hoyUTC) {
+        evento.remove()
+      } else {
+        quedan++
+        const contador = evento.querySelector<HTMLElement>("[data-fecha]")
+        if (contador) {
+          const dias = Math.max(0, Math.round((Date.UTC(anio, mes - 1, dia) - hoyUTC) / MS_POR_DIA))
+          contador.textContent = `${dias} ${dias === 1 ? "día" : "días"}`
+        }
+      }
+    })
+    lista.querySelector(".sin-eventos")?.classList.toggle("hidden", quedan > 0)
+  })
+</script>
+
+<style>
+  .agujero-negro {
+    animation: girar 40s linear infinite;
+  }
+  @keyframes girar {
+    to { transform: rotate(360deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .agujero-negro { animation: none; }
+  }
+</style>
