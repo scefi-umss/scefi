@@ -1,12 +1,8 @@
 @import "tailwindcss";
 
-/* Tipografía de los diseños nuevos (Núcleo, Estela): Oswald en vez de Poppins */
-.fuente-diseno,
-.fuente-diseno * {
-  font-family: "Oswald", sans-serif;
-}
-.fuente-diseno {
-  font-weight: 300;
+@theme {
+  --font-sans: "Oswald", ui-sans-serif, system-ui, sans-serif;
+  --color-expecard-pi: #faf7e9;
 }
 
 /* Recuadro inclinado de fondo (claro en modo claro, gris en modo oscuro).
