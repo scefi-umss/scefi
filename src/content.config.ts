@@ -17,4 +17,14 @@ const actividades = defineCollection({
   })
 })
 
-export const collections = {actividades}
+const eventos = defineCollection({
+  loader: glob({base: 'src/content/eventos', pattern: '*.md'}),
+  schema: z.object({
+    nombre: z.string(),
+    // ISO YYYY-MM-DD; la misma cadena que consume src/lib/fechas.ts
+    fecha: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "fecha debe ser YYYY-MM-DD"),
+    color: z.enum(["primary", "secondary"]).default("primary"),
+  })
+})
+
+export const collections = {actividades, eventos}

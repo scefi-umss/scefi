@@ -1,32 +1,29 @@
 ---
-// Lista de próximos eventos. Los eventos cuya fecha ya pasó no se muestran;
-// si no queda ninguno, aparece el agujero negro girando con un aviso.
+// Lista de próximos eventos. Lee la colección `eventos` (única fuente),
+// muestra los vigentes más cercanos hasta `limite`; si no queda ninguno,
+// aparece el agujero negro girando con un aviso.
 import { Image } from "astro:assets"
 import EventoCard from "./EventoCard.astro"
-import eventos from "../data/eventos.json"
-import { yaPaso } from "../lib/fechas"
+import { getEventosVigentes } from "../lib/eventos"
 import agujeroNegro from "../assets/agujero-negro.png"
 
 interface Props {
-  limite?: number // cuántos eventos vigentes mostrar (por defecto: todos)
+  limite?: number // cuántos eventos vigentes mostrar (homepage: 5)
 }
 const { limite = Number.POSITIVE_INFINITY } = Astro.props
 
 // Filtro + orden al generar la página; el script de abajo repite el filtro en
 // el navegador, porque el sitio es estático y un evento puede vencer después
 // de publicarlo.
-const vigentes = eventos
-  .filter((e) => !yaPaso(e.fecha))
-  .sort((a, b) => a.fecha.localeCompare(b.fecha))
-  .slice(0, limite)
+const vigentes = await getEventosVigentes(limite)
 ---
 
 <div class="proximos-eventos">
   {vigentes.map((evento) => (
     <EventoCard
-      nombre={evento.nombre}
-      fecha={evento.fecha}
-      color={evento.color as 'primary' | 'secondary'}
+      nombre={evento.data.nombre}
+      fecha={evento.data.fecha}
+      color={evento.data.color}
     />
   ))}
 
