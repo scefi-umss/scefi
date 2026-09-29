@@ -1,7 +1,8 @@
 ---
-// Tarjeta de actividad del diseño "Estela": imagen a la izquierda y texto sobre una forma inclinada
+ // Tarjeta de actividad del diseño "Estela": imagen a la izquierda y texto sobre una forma inclinada
 import type { CollectionEntry } from 'astro:content'
 import { Image } from 'astro:assets'
+import { base } from '../lib/url'
 
 interface Props {
   actividad: CollectionEntry<'actividades'>
@@ -29,7 +30,7 @@ const {name, organizer, image, description} = actividad.data
           "rounded-full px-10 py-2 text-lg text-black transition hover:brightness-110 dark:text-white",
           indice % 2 === 0 ? "bg-primary" : "bg-secondary",
         ]}
-        href={`${import.meta.env.BASE_URL}/actividades/${actividad.id}`}
+        href={base(`/actividades/${actividad.id}`)}
       >
         Más información
       </a>
@@ -38,20 +39,15 @@ const {name, organizer, image, description} = actividad.data
 </article>
 
 <style>
-  /* Forma clara (u oscura) inclinada detrás de cada actividad */
+  /* Forma inclinada detrás de cada actividad. Usa --color-panel (por tema). */
   .actividad::before {
     content: "";
     position: absolute;
     inset: -1.25rem -0.5rem -1.25rem 25%;
     z-index: 0;
-    background: var(--color-base-200);
+    background: var(--color-panel);
     border-radius: 3rem;
     transform: rotate(4deg);
-  }
-  @media (prefers-color-scheme: dark) {
-    .actividad::before {
-      background: var(--color-accent);
-    }
   }
   @media (max-width: 639px) {
     .actividad::before {

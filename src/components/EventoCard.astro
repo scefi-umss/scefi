@@ -1,5 +1,7 @@
 ---
-// Carta de Proximos eventos, contador
+ // Carta de Proximos eventos, contador.
+ // Presentacional: el filtrado por fecha y el recuento en vivo los hace ProximosEventos.
+import { diasRestantes, fechaLegible } from "../lib/fechas"
 interface Props {
   nombre: string
   fecha: string                        // formato ISO: "2026-08-30"
@@ -13,14 +15,7 @@ const fondos = {
   secondary: 'bg-secondary'
 }
 
-// Dias restantes calculados mas recuento consulta web
-const MS_POR_DIA = 1000 * 60 * 60 * 24
-const [anio, mes, dia] = fecha.split('-').map(Number)
-const hoy = new Date()
-const diferencia = Date.UTC(anio, mes - 1, dia) - Date.UTC(hoy.getFullYear(), hoy.getMonth(), hoy.getDate())
-const dias = Math.max(0, Math.round(diferencia / MS_POR_DIA))
-
-const fechaLegible = `${String(dia).padStart(2, '0')}/${String(mes).padStart(2, '0')}/${anio}`
+const dias = diasRestantes(fecha)
 ---
 
 <article class="evento relative my-6" data-evento-fecha={fecha}>
@@ -35,19 +30,7 @@ const fechaLegible = `${String(dia).padStart(2, '0')}/${String(mes).padStart(2, 
     </div>
     <div class="text-center">
       <p class="text-lg leading-tight">{nombre}</p>
-      <p class="text-sm">{fechaLegible}</p>
+      <p class="text-sm">{fechaLegible(fecha)}</p>
     </div>
   </div>
 </article>
-
-<script>
-  const MS_POR_DIA = 1000 * 60 * 60 * 24
-
-  document.querySelectorAll<HTMLElement>('[data-fecha]').forEach((el) => {
-    const [anio, mes, dia] = el.dataset.fecha!.split('-').map(Number)
-    const hoy = new Date()
-    const diferencia = Date.UTC(anio, mes - 1, dia) - Date.UTC(hoy.getFullYear(), hoy.getMonth(), hoy.getDate())
-    const dias = Math.max(0, Math.round(diferencia / MS_POR_DIA))
-    el.textContent = `${dias} ${dias === 1 ? 'día' : 'días'}`
-  })
-</script>

@@ -1,19 +1,21 @@
 ---
-// Foto de portada con título grande y borde inferior inclinado (diseños Núcleo y Estela)
+ // Foto de portada con título grande y borde inferior inclinado (diseños Núcleo y Estela)
 import { Image } from "astro:assets"
 import fotoGrupo from "../assets/nucleo/grupo.png"
 
 interface Props {
   titulo: string
   italica?: boolean   // en modo claro el título de Estela va en cursiva
+  imagen?: ImageMetadata
+  alt?: string
 }
 
-const { titulo, italica = false } = Astro.props
+const { titulo, italica = false, imagen = fotoGrupo, alt = "Integrantes de la SCEFI" } = Astro.props
 ---
 <section class="portada relative">
   <Image
-    src={fotoGrupo}
-    alt="Integrantes de la SCEFI"
+    src={imagen}
+    alt={alt}
     class="h-[55vh] max-h-[36rem] min-h-72 w-full object-cover sm:h-[70vh]"
     loading="eager"
   />

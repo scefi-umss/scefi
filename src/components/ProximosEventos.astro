@@ -4,18 +4,21 @@
 import { Image } from "astro:assets"
 import EventoCard from "./EventoCard.astro"
 import eventos from "../data/eventos.json"
+import { yaPaso } from "../lib/fechas"
 import agujeroNegro from "../assets/agujero-negro.png"
 
-// Un evento sigue vigente hasta el final de su día
-const yaPaso = (fecha: string) => {
-  const [anio, mes, dia] = fecha.split("-").map(Number)
-  const hoy = new Date()
-  return Date.UTC(anio, mes - 1, dia) < Date.UTC(hoy.getFullYear(), hoy.getMonth(), hoy.getDate())
+interface Props {
+  limite?: number // cuántos eventos vigentes mostrar (por defecto: todos)
 }
+const { limite = Number.POSITIVE_INFINITY } = Astro.props
 
-// Filtro al generar la página; el script de abajo repite el filtro en el navegador,
-// porque el sitio es estático y un evento puede vencer después de publicarlo.
-const vigentes = eventos.filter((e) => !yaPaso(e.fecha))
+// Filtro + orden al generar la página; el script de abajo repite el filtro en
+// el navegador, porque el sitio es estático y un evento puede vencer después
+// de publicarlo.
+const vigentes = eventos
+  .filter((e) => !yaPaso(e.fecha))
+  .sort((a, b) => a.fecha.localeCompare(b.fecha))
+  .slice(0, limite)
 ---
 
 <div class="proximos-eventos">
@@ -34,14 +37,26 @@ const vigentes = eventos.filter((e) => !yaPaso(e.fecha))
 </div>
 
 <script>
+  // Único script por lista: actualiza los contadores y retira los vencidos.
+  // Misma regla que en src/lib/fechas.ts (duplicada aquí porque corre en cliente).
+  import { MS_POR_DIA } from "../lib/fechas"
+
   document.querySelectorAll<HTMLElement>(".proximos-eventos").forEach((lista) => {
     const hoy = new Date()
     const hoyUTC = Date.UTC(hoy.getFullYear(), hoy.getMonth(), hoy.getDate())
     let quedan = 0
     lista.querySelectorAll<HTMLElement>("[data-evento-fecha]").forEach((evento) => {
       const [anio, mes, dia] = evento.dataset.eventoFecha!.split("-").map(Number)
-      if (Date.UTC(anio, mes - 1, dia) < hoyUTC) evento.remove()
-      else quedan++
+      if (Date.UTC(anio, mes - 1, dia) < hoyUTC) {
+        evento.remove()
+      } else {
+        quedan++
+        const contador = evento.querySelector<HTMLElement>("[data-fecha]")
+        if (contador) {
+          const dias = Math.max(0, Math.round((Date.UTC(anio, mes - 1, dia) - hoyUTC) / MS_POR_DIA))
+          contador.textContent = `${dias} ${dias === 1 ? "día" : "días"}`
+        }
+      }
     })
     lista.querySelector(".sin-eventos")?.classList.toggle("hidden", quedan > 0)
   })
