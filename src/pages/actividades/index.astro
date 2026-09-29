@@ -1,10 +1,10 @@
 ---
-import { getCollection } from "astro:content"
 import ActividadSeccion from "../../components/ActividadSeccion.astro"
 import BaseLayout from "../../layouts/BaseLayout.astro"
 import Portada from "../../components/Portada.astro"
+import { getActividadesOrdenadas } from "../../lib/actividades"
 
-const actividades = await getCollection('actividades')
+const actividades = await getActividadesOrdenadas()
 
 // Categorías de la columna derecha (en celular van debajo de las actividades)
 const categorias = [

@@ -1,22 +1,25 @@
 ---
 // Carta de Proyectos destacados: imagen + etiqueta + descripcion.
+// SSoT: en la homepage se alimenta desde la colección `actividades`
+// (front matter), no con textos copiados en la página.
 import {Image} from 'astro:assets'
 
 interface Props {
   titulo: string
   descripcion: string
-  imagen: ImageMetadata      // import desde src/ 
+  imagen?: ImageMetadata
   alt?: string
+  href?: string // detalle de la actividad; si se da, el título enlaza
 }
 
-const {titulo, descripcion, imagen, alt} = Astro.props
+const {titulo, descripcion, imagen, alt, href} = Astro.props
 ---
 
 <article class="my-8 rounded-3xl bg-white/50 p-4">
   <div class="relative">
-    <Image src={imagen} alt={alt ?? titulo} class="w-full object-cover" />
+    {imagen && <Image src={imagen} alt={alt ?? titulo} class="w-full object-cover" />}
     <p class="absolute bottom-0 left-0 translate-y-1/2 bg-secondary px-4 py-2 font-bold text-black">
-      {titulo}
+      {href ? <a href={href}>{titulo}</a> : titulo}
     </p>
   </div>
 
