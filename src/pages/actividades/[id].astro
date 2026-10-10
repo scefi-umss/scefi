@@ -28,7 +28,7 @@ const {Content} = await render(actividad)
         <h2 class="text-3xl uppercase sm:text-4xl">{actividad.data.name}</h2>
         <h4 class="mb-4 text-xl opacity-80">Organiza: {actividad.data.organizer}</h4>
         {actividad.data.image && (
-          <Image src={actividad.data.image} alt={actividad.data.name} class="w-full object-cover" />
+          <Image src={actividad.data.image} alt={actividad.data.name} class="aspect-[4/3] w-full object-cover" />
         )}
         <Content />
       </div>

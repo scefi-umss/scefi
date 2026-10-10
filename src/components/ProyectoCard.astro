@@ -2,6 +2,7 @@
 // Carta de Proyectos destacados: imagen + etiqueta + descripcion.
 // SSoT: en la homepage se alimenta desde la colección `actividades`
 // (front matter), no con textos copiados en la página.
+// La altura no depende del texto: line-clamp + grow mantienen las cartas iguales.
 import {Image} from 'astro:assets'
 
 interface Props {
@@ -9,21 +10,26 @@ interface Props {
   descripcion: string
   imagen?: ImageMetadata
   alt?: string
-  href?: string // detalle de la actividad; si se da, el título enlaza
+  href?: string // detalle de la actividad; si se da, imagen y título enlazan
 }
 
 const {titulo, descripcion, imagen, alt, href} = Astro.props
+const imagenClase = "aspect-[4/3] w-full object-cover"
 ---
 
-<article class="my-8 rounded-3xl bg-white/50 p-4">
-  <div class="relative">
-    {imagen && <Image src={imagen} alt={alt ?? titulo} class="w-full object-cover" />}
-    <p class="absolute bottom-0 left-0 translate-y-1/2 bg-secondary px-4 py-2 font-bold text-black">
+<article class="flex h-full flex-col rounded-3xl bg-white/50 p-4">
+  <div class="relative shrink-0">
+    {imagen && (
+      href
+        ? <a href={href} aria-label={titulo}><Image src={imagen} alt={alt ?? titulo} class={imagenClase} /></a>
+        : <Image src={imagen} alt={alt ?? titulo} class={imagenClase} />
+    )}
+    <p class="absolute bottom-0 left-0 line-clamp-2 max-w-[85%] translate-y-1/2 bg-secondary px-4 py-2 font-bold text-black">
       {href ? <a href={href}>{titulo}</a> : titulo}
     </p>
   </div>
 
-  <p class="bg-primary/40 px-5 pt-8 pb-5 text-center">
+  <p class="line-clamp-3 grow bg-primary/40 px-5 pt-8 pb-5 text-center leading-snug">
     {descripcion}
   </p>
 </article>
